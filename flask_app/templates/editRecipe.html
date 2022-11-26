@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Recipe</title>
+</head>
+<body>
+
+    <div class="d-flex justify-content-around mt-5">
+        <h1 class="text-primary">Edit Recipe</h1>
+        
+        <div>
+            <a href='/dashboard' class="btn btn-success btn-lg active" role="button" aria-pressed="true">Dashboard</a>
+            <a href='/logout' class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Log Out</a>
+        </div>
+    </div>
+    <div class="form-group">
+        {% with messages = get_flashed_messages(category_filter = ['updateRecipe']) %}     
+            {% if messages %}                            
+                {% for message in messages %}
+                    <p class="text-danger font-weight-bold text-center">{{message}}</p>                   
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <form action="/recipe/update/{{recipe.id}}" method="post">
+        <div>
+            <input type="hidden" name="user_id" value="{{loggedUser.id}}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" value="{{recipe.name}}">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="description" cols="20" rows="5" >{{recipe.description}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="instructionn">Instructions</label>
+                <textarea class="form-control" name="instruction" cols="20" rows="5" >{{recipe.instruction}}</textarea>
+            </div>
+            
+        </div>
+        
+        <div>
+            <div class="form-group">
+                <label for="dateMade">Date Made On</label>
+                <input type="date" class="form-control" name="dateMade" value="{{recipe.dateMade}}">
+            </div>
+            <div class="form-group">
+                <p>Under 30 minutes?</p>
+
+                {% if recipe.under30 == 1 %}
+                <div class="form-check">
+                    <input class="form-check-input" checked type="radio" name="under30" value="1">
+                    <label class="form-check-label" for="under30">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="under30" value="0">
+                    <label class="form-check-label" for="under30">No</label>
+                </div>
+                {% else %}
+                <div class="form-check">
+                    <input class="form-check-input"  type="radio" name="under30" value="1">
+                    <label class="form-check-label" for="under30">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" checked type="radio" name="under30" value="0">
+                    <label class="form-check-label" for="under30">No</label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Update</button>
+        
+    </form>
+</body>
+</html>
